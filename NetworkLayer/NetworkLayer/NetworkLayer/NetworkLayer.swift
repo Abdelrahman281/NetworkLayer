@@ -39,7 +39,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Services.
     
-    func callService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: Any]? = nil, parameters: [String: Any]? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+    func callService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -50,7 +50,19 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         
         //Constructing URL Request.
         
-        let urlRequest = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeOutInterval)
+        var urlRequest = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeOutInterval)
+        urlRequest.httpMethod = method.rawValue
+        if let httpHeaders = headers {
+            urlRequest.allHTTPHeaderFields = httpHeaders
+        }
+        if let body = postData {
+            do{
+                let jsonObj = try JSONEncoder().encode(body)
+                urlRequest.httpBody = jsonObj
+            } catch {
+                failure(error)
+            }
+        }
         
         
         //Constrcuting URL Session.
