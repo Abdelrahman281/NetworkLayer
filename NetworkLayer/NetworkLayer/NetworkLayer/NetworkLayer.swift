@@ -9,18 +9,18 @@
 import Foundation
 
 
-//Representation of success&failure blocks.
+//Representation of Success&Failure Blocks.
 
 typealias SuccessBlock<T: Decodable> = (T) -> Void
 typealias FailureBlock = (Error) -> Void
 
 
-//Main class for network operations.
+//Main Class For Network Operations.
 
 class NetworkLayer: NSObject, URLSessionDelegate {
     
     
-    //Shared instance for universal use.
+    //Shared Instance For Universal Use.
     
     static let shared: NetworkLayer = NetworkLayer()
     
@@ -37,9 +37,9 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     }
     
     
-    //Main Function For Calling Services.
+    //Main Function For Calling Data Services.
     
-    func callService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+    func callDataService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -103,5 +103,66 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         //Start The Task.
         
         dataTask.resume()
+    }
+    
+    
+    //Main Function For Calling Upload Services.
+    
+    func callUploadService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: Data? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+        
+        
+        //URL Encoding.
+        
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: encodedURL) else { return }
+        
+        
+        //Constructing URL Request.
+        
+        var urlRequest = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeOutInterval)
+        urlRequest.httpMethod = method.rawValue
+        if let httpHeaders = headers {
+            urlRequest.allHTTPHeaderFields = httpHeaders
+        }
+        
+        
+        //Constrcuting URL Session.
+        
+        let urlSesssion = URLSession.init(configuration: .default, delegate: self, delegateQueue: delegateQueue)
+        
+        
+        //Constructing Upload Task.
+        
+        let uploadTask = urlSesssion.uploadTask(with: urlRequest, from: postData){data, urlResponse, error in
+            
+            
+            //Handling Error Case.
+            
+            if let err = error {
+                failure(err)
+                return
+            }
+            
+            
+            //Checking For Success Response.
+            
+            if let httpResponse = urlResponse as? HTTPURLResponse {
+                if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
+                    if let responseData = data {
+                        do {
+                            let responseObj = try JSONDecoder().decode(T.self, from: responseData)
+                            success(responseObj)
+                        } catch {
+                            failure(error)
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        //Start The Task.
+        
+        uploadTask.resume()
     }
 }
