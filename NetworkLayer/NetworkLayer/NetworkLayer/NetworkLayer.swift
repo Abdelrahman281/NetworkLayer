@@ -12,7 +12,7 @@ import Foundation
 //Representation of Success&Failure Blocks.
 
 typealias SuccessBlock<T: Decodable> = (T) -> Void
-typealias FailureBlock = (Error) -> Void
+typealias FailureBlock = (Error?) -> Void
 
 
 //Main Class For Network Operations.
@@ -44,8 +44,12 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         
         //URL Encoding.
         
-        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        guard let url = URL(string: encodedURL) else { return }
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            print("Failure URL Encoding")
+            return }
+        guard let url = URL(string: encodedURL) else {
+            print("Failure Creating URL Object")
+            return }
         
         
         //Constructing URL Request.
@@ -61,6 +65,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
                 urlRequest.httpBody = jsonObj
             } catch {
                 failure(error)
+                return
             }
         }
         
@@ -113,8 +118,12 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         
         //URL Encoding.
         
-        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        guard let url = URL(string: encodedURL) else { return }
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            print("Failure URL Encoding")
+            return }
+        guard let url = URL(string: encodedURL) else {
+            print("Failure Creating URL Object")
+            return }
         
         
         //Constructing URL Request.
@@ -174,8 +183,12 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         
         //URL Encoding.
         
-        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        guard let url = URL(string: encodedURL) else { return }
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            print("Failure URL Encoding")
+            return }
+        guard let url = URL(string: encodedURL) else {
+            print("Failure Creating URL Object")
+            return }
         
         
         //Constructing URL Request.
@@ -210,6 +223,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
             if let httpResponse = urlResponse as? HTTPURLResponse {
                 if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
                     guard let localURL = url else {
+                        print("URL Path not exist")
                         return
                     }
                     
