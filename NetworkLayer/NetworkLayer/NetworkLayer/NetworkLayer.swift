@@ -165,4 +165,69 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         
         uploadTask.resume()
     }
+    
+    
+    //Main Function For Calling Download Services.
+    
+    func callDownloadService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, destinationURL: URL, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+        
+        
+        //URL Encoding.
+        
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: encodedURL) else { return }
+        
+        
+        //Constructing URL Request.
+        
+        var urlRequest = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeOutInterval)
+        urlRequest.httpMethod = method.rawValue
+        if let httpHeaders = headers {
+            urlRequest.allHTTPHeaderFields = httpHeaders
+        }
+        
+        
+        //Constrcuting URL Session.
+        
+        let urlSesssion = URLSession.init(configuration: .default, delegate: self, delegateQueue: delegateQueue)
+        
+        
+        //Constructing Download Task.
+        
+        let uploadTask = urlSesssion.downloadTask(with: urlRequest){url, urlResponse, error in
+
+            
+            //Handling Error Case.
+            
+            if let err = error {
+                failure(err)
+                return
+            }
+            
+            
+            //Checking For Success Response.
+            
+            if let httpResponse = urlResponse as? HTTPURLResponse {
+                if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
+                    guard let localURL = url else {
+                        return
+                    }
+                    
+                    
+                    //Move to the destination URL.
+                    
+                    do {
+                        try FileManager.default.moveItem(at: localURL, to: destinationURL)
+                    } catch {
+                        failure(error)
+                    }
+                }
+            }
+        }
+        
+        
+        //Start The Task.
+        
+        uploadTask.resume()
+    }
 }
