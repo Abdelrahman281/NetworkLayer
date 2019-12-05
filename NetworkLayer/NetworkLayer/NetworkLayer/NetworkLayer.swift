@@ -3,7 +3,7 @@
 //  NetworkLayer
 //
 //  Created by Abdelrahman Mahmoud on 10/7/19.
-//  Copyright © 2019 AbdEl-Rahman Mahmoud. All rights reserved.
+//  Copyright © 2019 Abdelrahman Mahmoud. All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,8 @@ import Foundation
 
 //Representation of Success&Failure Blocks.
 
-typealias SuccessBlock<T: Decodable> = (T) -> Void
+typealias SuccessBlock = (Decodable) -> Void
+typealias SuccessBlockWithoutObject = ()  -> Void
 typealias FailureBlock = (Error?) -> Void
 
 
@@ -39,7 +40,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Data Services.
     
-    func callDataService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+    func callDataService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, responseClass: T.Type, success: @escaping SuccessBlock, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -113,7 +114,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Upload Services.
     
-    func callUploadService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: Data? = nil, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+    func callUploadService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: Data? = nil, responseClass: T.Type, success: @escaping SuccessBlock, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -178,7 +179,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Download Services.
     
-    func callDownloadService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, destinationURL: URL, success: @escaping SuccessBlock<T>, failure: @escaping FailureBlock) {
+    func callDownloadService(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, destinationURL: URL, success: @escaping SuccessBlockWithoutObject, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -232,6 +233,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
                     
                     do {
                         try FileManager.default.moveItem(at: localURL, to: destinationURL)
+                        success()
                     } catch {
                         failure(error)
                     }
