@@ -3,10 +3,13 @@
 //  NetworkLayer
 //
 //  Created by Abdelrahman Mahmoud on 10/8/19.
-//  Copyright © 2019 AbdEl-Rahman Mahmoud. All rights reserved.
+//  Copyright © 2019 Abdelrahman Mahmoud. All rights reserved.
 //
 
 import Foundation
+
+
+//Enum for HTTP Methods cases.
 
 enum HTTPMethod: String {
     case CONNECT = "CONNECT"

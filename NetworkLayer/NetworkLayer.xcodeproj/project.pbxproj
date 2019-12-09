@@ -23,6 +23,9 @@
 		05484F882382BE7300E7E0FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05484F872382BE7300E7E0FC /* User.swift */; };
 		05484F892382C6CE00E7E0FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05484F872382BE7300E7E0FC /* User.swift */; };
 		05484F8A2382CF1500E7E0FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05484F872382BE7300E7E0FC /* User.swift */; };
+		05952984239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952983239E81FD00B8B49B /* NetworkLayerEncodable.swift */; };
+		05952985239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952983239E81FD00B8B49B /* NetworkLayerEncodable.swift */; };
+		05952986239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952983239E81FD00B8B49B /* NetworkLayerEncodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,7 @@
 		0532790C234B9E2700DFF429 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		05327911234C981F00DFF429 /* HTTPMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethods.swift; sourceTree = "<group>"; };
 		05484F872382BE7300E7E0FC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		05952983239E81FD00B8B49B /* NetworkLayerEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayerEncodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 			children = (
 				0532790C234B9E2700DFF429 /* NetworkLayer.swift */,
 				05327911234C981F00DFF429 /* HTTPMethods.swift */,
+				05952983239E81FD00B8B49B /* NetworkLayerEncodable.swift */,
 			);
 			path = NetworkLayer;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05952984239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */,
 				05327912234C981F00DFF429 /* HTTPMethods.swift in Sources */,
 				0532790D234B9E2700DFF429 /* NetworkLayer.swift in Sources */,
 				053278DF234B864800DFF429 /* ViewController.swift in Sources */,
@@ -294,6 +300,7 @@
 				05484F882382BE7300E7E0FC /* User.swift in Sources */,
 				0532790E234B9E2700DFF429 /* NetworkLayer.swift in Sources */,
 				053278F2234B864A00DFF429 /* NetworkLayerTests.swift in Sources */,
+				05952985239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */,
 				05327913234C981F00DFF429 /* HTTPMethods.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,6 +312,7 @@
 				05484F8A2382CF1500E7E0FC /* User.swift in Sources */,
 				0532790F234B9E2700DFF429 /* NetworkLayer.swift in Sources */,
 				053278FD234B864A00DFF429 /* NetworkLayerUITests.swift in Sources */,
+				05952986239E81FD00B8B49B /* NetworkLayerEncodable.swift in Sources */,
 				05327914234C981F00DFF429 /* HTTPMethods.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

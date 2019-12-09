@@ -40,12 +40,12 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Data Services.
     
-    func callDataService<T: Decodable, S: Encodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: S? = nil, responseClass: T.Type, success: @escaping SuccessBlock, failure: @escaping FailureBlock) {
+    func callDataService<T: Decodable>(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: NetworkLayerEncodable?, responseClass: T.Type, success: @escaping SuccessBlock, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
         
-        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+        guard let encodedURL = urlPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             print("Failure URL Encoding")
             return }
         guard let url = URL(string: encodedURL) else {
@@ -62,7 +62,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         }
         if let body = postData {
             do{
-                let jsonObj = try JSONEncoder().encode(body)
+                let jsonObj = try body.toJSONData()
                 urlRequest.httpBody = jsonObj
             } catch {
                 failure(error)
@@ -179,7 +179,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Main Function For Calling Download Services.
     
-    func callDownloadService(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, destinationURL: URL, success: @escaping SuccessBlockWithoutObject, failure: @escaping FailureBlock) {
+    func callDownloadService(urlPath: String, method: HTTPMethod, timeOutInterval: TimeInterval, headers: [String: String]? = nil, postData: NetworkLayerEncodable?, destinationURL: URL, success: @escaping SuccessBlockWithoutObject, failure: @escaping FailureBlock) {
         
         
         //URL Encoding.
@@ -198,6 +198,15 @@ class NetworkLayer: NSObject, URLSessionDelegate {
         urlRequest.httpMethod = method.rawValue
         if let httpHeaders = headers {
             urlRequest.allHTTPHeaderFields = httpHeaders
+        }
+        if let body = postData {
+            do{
+                let jsonObj = try body.toJSONData()
+                urlRequest.httpBody = jsonObj
+            } catch {
+                failure(error)
+                return
+            }
         }
         
         
