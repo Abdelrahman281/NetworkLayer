@@ -92,7 +92,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
             //Checking For Success Response.
             
             if let httpResponse = urlResponse as? HTTPURLResponse {
-                if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
+                if 200..<300 ~= httpResponse.statusCode {
                     if let responseData = data {
                         do {
                             let responseObj = try JSONDecoder().decode(T.self, from: responseData)
@@ -157,7 +157,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
             //Checking For Success Response.
             
             if let httpResponse = urlResponse as? HTTPURLResponse {
-                if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
+                if 200..<300 ~= httpResponse.statusCode {
                     if let responseData = data {
                         do {
                             let responseObj = try JSONDecoder().decode(T.self, from: responseData)
@@ -231,7 +231,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
             //Checking For Success Response.
             
             if let httpResponse = urlResponse as? HTTPURLResponse {
-                if httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 {
+                if 200..<300 ~= httpResponse.statusCode {
                     guard let localURL = url else {
                         print("URL Path not exist")
                         return
