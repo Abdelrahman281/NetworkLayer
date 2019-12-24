@@ -29,7 +29,7 @@ class NetworkLayerTests: XCTestCase {
         
         let promise = expectation(description: "StatusCode 200")
         
-        NetworkLayer.shared.callDataService(urlPath: urlPath, method: HTTPMethod.GET, timeOutInterval: 30.0, postData: nil, responseClass: User.self, success: { responseObj in
+        NetworkLayer.shared.callDataService(urlPath: urlPath, method: HTTPMethod.GET, timeOutInterval: 20.0, postData: nil, responseClass: User.self, success: { responseObj in
             if responseObj is User {
                 
                 //Matched the expectation.
@@ -42,7 +42,6 @@ class NetworkLayerTests: XCTestCase {
         
         XCTFail()
        })
-        wait(for: [promise], timeout: 10.0)
-        XCTFail()
+        wait(for: [promise], timeout: 20.0)
     }
 }
