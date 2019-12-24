@@ -43,5 +43,6 @@ class NetworkLayerTests: XCTestCase {
         XCTFail()
        })
         wait(for: [promise], timeout: 10.0)
+        XCTFail()
     }
 }
