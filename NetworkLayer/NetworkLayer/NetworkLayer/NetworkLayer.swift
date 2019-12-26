@@ -28,7 +28,7 @@ class NetworkLayer: NSObject, URLSessionDelegate {
     
     //Delegate Queue.
     
-    let delegateQueue: OperationQueue
+    private let delegateQueue: OperationQueue
     
     
     //Private Initializer.
